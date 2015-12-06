@@ -1,0 +1,57 @@
+## To run pox controller (go to mininet/pox/)
+
+./pox.py proto.arp_responder --192.168.0.1=00:00:00:00:00:10 --10.0.1.1=00:00:00:00:00:11 --10.0.2.1=00:00:00:00:00:12 --10.0.3.1=00:00:00:00:00:13
+
+
+
+## To run mininet (go to mininet/example/ )
+python run_topology
+
+
+
+## dpctl flow rules for packet transfer between Host_1,Host_2 and Host_3 
+
+
+dpctl add-flow ip,dl_dst=00:00:00:00:00:13,nw_dst=10.0.1.10,actions=mod_dl_dst:00:00:00:00:00:01,normal
+
+dpctl add-flow ip,dl_dst=00:00:00:00:00:11,nw_dst=10.0.2.10,actions=mod_dl_dst:00:00:00:00:00:02,normal
+
+dpctl add-flow ip,dl_dst=00:00:00:00:00:13,nw_dst=10.0.2.10,actions=mod_dl_dst:00:00:00:00:00:02,normal
+
+dpctl add-flow ip,dl_dst=00:00:00:00:00:11,nw_dst=10.0.3.10,actions=mod_dl_dst:00:00:00:00:00:03,normal
+
+dpctl add-flow ip,dl_dst=00:00:00:00:00:12,nw_dst=10.0.3.10,actions=mod_dl_dst:00:00:00:00:00:03,normal
+
+dpctl add-flow ip,dl_dst=00:00:00:00:00:12,nw_dst=10.0.1.10,actions=mod_dl_dst:00:00:00:00:00:01,normal
+
+
+
+## dpctl flow rules for packet transfer from Host_1,Host_2,Host_3 to Host_4 
+
+sh ovs-ofctl add-flow s1 ip,nw_dst=192.168.0.22,actions=output:4    ## Forward all packets from s1 with dest add=192.168.0.22 to out port=4 
+
+sh ovs-ofctl add-flow s2 ip,nw_dst=10.0.2.10,actions=output:2       ## Forward all packets from s2 with dest add=10.0.2.10 to out port=2	
+
+sh ovs-ofctl add-flow s2 ip,nw_dst=10.0.3.10,actions=output:2       ## Forward all packets from s2 with dest add=10.0.3.10 to out port=2
+
+sh ovs-ofctl add-flow s2 ip,nw_dst=10.0.1.10,actions=output:2       ## Forward all packets from s2 with dest add=10.0.1.10 to out port=2
+
+
+
+
+sh ovs-ofctl add-flow s1 ip,dl_dst=00:00:00:00:00:10,nw_dst=10.0.2.10,actions=mod_dl_dst:00:00:00:00:00:02,normal ## Replace Mac address with 00:00:00:00:00:02 of packets with dest add = 10.0.2.10 at s1
+
+sh ovs-ofctl add-flow s1 ip,dl_dst=00:00:00:00:00:10,nw_dst=10.0.1.10,actions=mod_dl_dst:00:00:00:00:00:01,normal ## Replace Mac address with 00:00:00:00:00:01 of packets with dest add = 10.0.1.10 at s1
+
+
+sh ovs-ofctl add-flow s1 ip,dl_dst=00:00:00:00:00:10,nw_dst=10.0.3.10,actions=mod_dl_dst:00:00:00:00:00:03,normal ## Replace Mac address with 00:00:00:00:00:03 of packets with dest add = 10.0.3.10 at s1
+
+
+sh ovs-ofctl add-flow s2 ip,dl_dst=00:00:00:00:00:12,nw_dst=192.168.0.22,actions=mod_dl_dst:00:00:00:00:00:04,normal #3 Replace Mac address with 00:00:00:00:00:04 of packets with dest add = 192.168.0.22 at s2
+
+sh ovs-ofctl add-flow s2 ip,dl_dst=00:00:00:00:00:11,nw_dst=192.168.0.22,actions=mod_dl_dst:00:00:00:00:00:04,normal #3 Replace Mac address with 00:00:00:00:00:04 of packets with dest add = 192.168.0.22 at s2
+
+
+sh ovs-ofctl add-flow s2 ip,dl_dst=00:00:00:00:00:13,nw_dst=192.168.0.22,actions=mod_dl_dst:00:00:00:00:00:04,normal #3 Replace Mac address with 00:00:00:00:00:04 of packets with dest add = 192.168.0.22 at s2
+
+

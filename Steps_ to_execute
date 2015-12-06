@@ -1,0 +1,37 @@
+keep three python files under cd pox/pox/misc folder
+Topology.py
+TopologySlice.py
+FlowspaceSlice.py
+
+for first test:::::
+in one mininet terminal
+cd pox/pox/misc
+sudo mn -c
+sudo python Topology.py
+
+open a new mininet terminal
+cd pox
+sudo netstat -nlp|grep 6633
+sudo kill -9 pid
+./pox.py log.level --DEBUG pox.misc.topologySlice openflow.of_01 --port=6633
+
+pingall in mininet and see result
+
+for second test::::::
+in one mininet terminal
+cd pox/pox/misc
+sudo mn -c
+sudo python Topology.py
+
+open a new mininet terminal
+cd pox
+sudo netstat -nlp|grep 6633
+sudo kill -9 pid
+sudo ./pox.py log.level --DEBUG pox.misc.FlowspaceSlice openflow.of_01 --port=6633
+
+in mininet terminal 
+pingall - all hosts should be able to ping
+h3 iperf -s -p 80 &
+h4 iperf -s -p 22 &
+h1 iperf -c h3 -p 80 -t 2 -i 1
+h2 iperf -c h4 -p 22 -t 2 -i 1
