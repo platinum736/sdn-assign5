@@ -14,7 +14,7 @@ from mininet.node import RemoteController
 net = None
 
 class FVTopo(Topo):
-    # credit: https://github.com/onstutorial/onstutorial/blob/master/flowvisor_scripts/flowvisor_topo.py
+    
     def __init__(self):
         # Initialize topology
         Topo.__init__(self)
