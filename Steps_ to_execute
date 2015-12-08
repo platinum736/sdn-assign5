@@ -3,17 +3,19 @@ Topology.py
 TopologySlice.py
 FlowspaceSlice.py
 
+open a new mininet terminal
+cd pox
+sudo netstat -nlp|grep 6633
+sudo kill -9 pid
+./pox.py log.level --DEBUG pox.misc.TopologySlice openflow.of_01 --port=6633
+
+
 for first test:::::
 in one mininet terminal
 cd pox/pox/misc
 sudo mn -c
 sudo python Topology.py
 
-open a new mininet terminal
-cd pox
-sudo netstat -nlp|grep 6633
-sudo kill -9 pid
-./pox.py log.level --DEBUG pox.misc.topologySlice openflow.of_01 --port=6633
 
 pingall in mininet and see result
 
